@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>test post</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+	<a href='http://localhost:8080/getuserUuid'>获取UUID</a>
+	<div>
+		<h2>getHeadImg</h2>
+		<form action='http://localhost:8080/getImg' method="post" accept-charset="UTF-8">
+			<span>userUuid </span><input name='userUuid' id='userUuid'><br>
+			<span>imgId </span><input name='imgId' id='imgId'><br>
+			<button>submit</button>
+		</form>
+	</div>
+
+	<div>
+		<h2>上传图片</h2>
+		<form action="http://localhost:8080/uploadImg" method="post" enctype="multipart/form-data">
+     		<input type="file" name="img" /><br/>
+     		<span>userUuid </span><input name='userUuid' id='userUuid'><br>
+     		<button>submit</button>
+ 		</form>
+	</div>
+</body>
+</html>
