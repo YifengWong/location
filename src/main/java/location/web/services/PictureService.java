@@ -7,21 +7,14 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import location.util.ResultObject;
 import location.util.config.StaticString;
 
-
+@Service
 public class PictureService {
-	private static PictureService instance = null;
-	public static PictureService getInstance() {
-		if (instance == null) {
-			instance = new PictureService();
-		}
-		return instance;
-	}
-	
 	// 配置文件
 	private Properties config = new Properties();
 	
