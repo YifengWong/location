@@ -39,6 +39,12 @@ public class LocationController {
 		return "testPost";
 	}
 	
+	@RequestMapping(value = "/urlPage", method = RequestMethod.GET)
+	public String urlPage(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		response.setContentType("text/html;charset=UTF-8");
+		return "urlPage";
+	}
+	
 	@RequestMapping(value = "/getuserUuid", method = RequestMethod.GET)
 	public void getuserUuid(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		response.setContentType("text/html;charset=UTF-8");
@@ -77,8 +83,7 @@ public class LocationController {
 		out.write(pictureService.getImageBytes(userUuid, imgId));
 		out.flush();
 		
-	}
-	
+	}	
 	
 	
 }

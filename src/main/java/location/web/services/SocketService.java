@@ -2,26 +2,26 @@ package location.web.services;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
+
+import location.socket.SocketServer;
 
 @Service
 public class SocketService {
 	
 	public static final int SERVER_PORT = 9091;
-	private ServerSocket server = null;
+	private SocketServer socketServer;
 	
 	public SocketService(){
 		super();
-		startSocketListening();
+		socketServer = new SocketServer(9091);
+//		socketServer.startSocketListening();
 	}
 	
-	private void startSocketListening() {
-		try {
-			this.server = new ServerSocket(SERVER_PORT);
-		} catch (IOException e) {
-			System.out.println("启动失败");
-			e.printStackTrace();
-		}
-	}
+
+
 }

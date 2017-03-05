@@ -46,11 +46,14 @@ public class PictureService {
 		if(allowSuffixs.indexOf(suffix) == -1) {
 			return new ResultObject(StaticString.RESULT_FAIL, StaticString.IMG_WRONG_SUFFIXS, null);
 		}
-		String newFileName = PictureService.getUniqueFileName()+ "." + suffix;
-		String newFileUri = saveDir.getPath() + File.separator + userUuid + File.separator + newFileName;
-		
+//		String newFileName = PictureService.getUniqueFileName()+ "." + suffix;
 		File newDir = new File(saveDir.getPath() + File.separator + userUuid);
 		if (!newDir.exists()) newDir.mkdirs();
+		String newFileUri = newDir.getPath() + File.separator + fileName;
+		
+		System.out.println(newFileUri);
+		System.out.println(file.getSize());
+		
 		
 		try {
             FileOutputStream out = new FileOutputStream(newFileUri);
@@ -58,7 +61,7 @@ public class PictureService {
             out.write(file.getBytes());
             out.flush();
             out.close();
-            return new ResultObject(StaticString.RESULT_SUCC, StaticString.IMG_UPLOAD_SUCC, newFileName);
+            return new ResultObject(StaticString.RESULT_SUCC, StaticString.IMG_UPLOAD_SUCC, fileName);
         } catch (Exception e) {
             e.printStackTrace();
         }
