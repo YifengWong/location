@@ -3,8 +3,6 @@ package location.socket;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SocketServer {
 	private int serverPort;
@@ -44,7 +42,7 @@ public class SocketServer {
 		}
 	}
 	
-	public void send(ServerMessage msg) {
+	public void send(Message msg) {
 		if (socketClient != null && !socketClient.isClosed()) {
 			socketClient.write(msg.toString().getBytes());
 		}
