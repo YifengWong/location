@@ -15,6 +15,9 @@ public class SocketServer {
 	private MsgManager recvMsgManager;
 	private MsgManager sendMsgManager;
 	
+	private Thread recvThread;
+	private Thread sendThread;
+	
 	public SocketServer(final int serverPort) {
 		super();
 		this.serverPort = serverPort;
@@ -26,10 +29,15 @@ public class SocketServer {
 		try {
 			this.server = new ServerSocket(serverPort);
 			Thread t = new Thread(new Runnable() {  
-	            public void run() {  
-	            	
+	            public void run() {
 	            	while (true) {
 	            		if (client == null || client.isClosed()) {
+	            			if (recvThread != null) {
+	            				recvThread.interrupt();
+	            			} 
+	            			if (sendThread != null) {
+	            				sendThread.interrupt();
+	            			}
 		        			try {
 		        				client = server.accept();
 		        				beginRecvLoop();
@@ -56,9 +64,12 @@ public class SocketServer {
 	}
 	
 	private void beginRecvLoop() {
-		Thread t = new Thread(new Runnable() {  
+		recvThread = new Thread(new Runnable() {  
             public void run() {  
             	while (true) {
+            		if (client == null || client.isClosed()) {
+            			break;
+            		}
             		// recv a head
             		int headCount = 0;
             		while (headCount != Message.HEAD_LENGTH) {
@@ -100,13 +111,17 @@ public class SocketServer {
             		recvMsgManager.push(msg);
             	}
             }});  
-        t.start();
+		recvThread.start();
+        
 	}
 	
 	private void beginSendLoop() {
-		Thread t = new Thread(new Runnable() {  
+		sendThread = new Thread(new Runnable() {  
             public void run() {  
             	while (true) {
+            		if (client == null || client.isClosed()) {
+            			break;
+            		}
             		Message msg = sendMsgManager.pop();
             		if (msg == null) {
             			try {
@@ -130,7 +145,7 @@ public class SocketServer {
         			
             	}
             }});  
-        t.start();
+		sendThread.start();
 	}
 
 }
