@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import location.util.ResultObject;
 import location.util.config.StaticString;
-import location.web.services.PictureService;
+import location.web.services.ImageService;
 import location.web.services.SocketService;
 
 
@@ -26,7 +26,7 @@ public class LocationController {
 	
 	@Autowired  
 	@Qualifier("pictureService") 
-	PictureService pictureService;
+	ImageService pictureService;
 	
 	@Autowired  
 	@Qualifier("socketService") 

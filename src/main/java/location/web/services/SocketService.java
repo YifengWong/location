@@ -1,6 +1,5 @@
 package location.web.services;
 
-
 import org.springframework.stereotype.Service;
 
 import location.socket.SocketServer;

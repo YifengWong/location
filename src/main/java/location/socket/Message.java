@@ -22,10 +22,10 @@ public class Message implements Serializable {
 		super();
 		this.flag = buffer[0];
 		this.userUuid = new String(buffer, 1, 33);
-		this.fileNum = buffer[37] & 0xFF | (buffer[36] & 0xFF) << 8 |  
-	            (buffer[35] & 0xFF) << 16 | (buffer[34] & 0xFF) << 24; 
-		this.fileLength = buffer[41] & 0xFF | (buffer[40] & 0xFF) << 8 |  
-	            (buffer[39] & 0xFF) << 16 | (buffer[38] & 0xFF) << 24;
+		this.fileNum = buffer[34] & 0xFF | (buffer[35] & 0xFF) << 8 |  
+	            (buffer[36] & 0xFF) << 16 | (buffer[37] & 0xFF) << 24; 
+		this.fileLength = buffer[38] & 0xFF | (buffer[39] & 0xFF) << 8 |  
+	            (buffer[40] & 0xFF) << 16 | (buffer[41] & 0xFF) << 24;
 		
 		this.fileBytes = null;
 		this.fileBytesCount = 0;

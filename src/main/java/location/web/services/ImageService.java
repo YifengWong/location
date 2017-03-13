@@ -14,14 +14,14 @@ import location.util.ResultObject;
 import location.util.config.StaticString;
 
 @Service
-public class PictureService {
+public class ImageService {
 	// 配置文件
 	private Properties config = new Properties();
 	
 	// 存放的文件夹
 	private File saveDir = null;
 	
-	private PictureService() {
+	private ImageService() {
 		super();
 		try {
 			config.load(this.getClass().getClassLoader().getResourceAsStream("image-config.properties"));
