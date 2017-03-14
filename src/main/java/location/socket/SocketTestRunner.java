@@ -13,12 +13,15 @@ public class SocketTestRunner {
 		System.out.println("start");
 		
 		Scanner sc = new Scanner(System.in);
+
+		Float[] params = new Float[21];
+		for (int i = 0; i < 21; i ++) params[i] = 10f;
 		
 		
 		while (true) {
 			String input = sc.nextLine();
 			if (input.equals("send")) {
-				Message msg = new Message((byte)1, "QWERTYUIOPASDFGHJKLZXCVBNM123456", 3, "tyiu".getBytes());
+				Message msg = new Message(Message.FLAG_IMG, "QWERTYUIOPASDFGHJKLZXCVBNM123456", 3, "tyiu".getBytes(), params);
 				socketServer.sendMsg(msg);
 				System.out.println("send finish");
 			} else if (input.equals("recv")) {
@@ -37,6 +40,13 @@ public class SocketTestRunner {
 					System.out.print((char)msgBytes[i]);
 				}
 				System.out.println();
+				if (msg.getFlag() == Message.FLAG_IMG) {
+					for (int i = 0; i < 21; i++) {
+						System.out.print(msg.getParams()[i] + " ");
+					}
+				}
+				System.out.println();
+
 				
 			} else if (input.equals("exit")) {
 				break;

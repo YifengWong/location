@@ -8,7 +8,6 @@ public class SocketServer {
 	public static final int BUFFER_LENGTH = 1024;
 	
 	private Socket client;
-	private byte[] buffer = new byte[1024];
 	private int serverPort;
 	private ServerSocket server = null;
 	
@@ -32,12 +31,6 @@ public class SocketServer {
 	            public void run() {
 	            	while (true) {
 	            		if (client == null || client.isClosed()) {
-	            			if (recvThread != null) {
-	            				recvThread.interrupt();
-	            			} 
-	            			if (sendThread != null) {
-	            				sendThread.interrupt();
-	            			}
 		        			try {
 		        				client = server.accept();
 		        				beginRecvLoop();
@@ -64,49 +57,60 @@ public class SocketServer {
 	}
 	
 	private void beginRecvLoop() {
-		recvThread = new Thread(new Runnable() {  
-            public void run() {  
+		recvThread = new Thread(new Runnable() {
+            public void run() {
             	while (true) {
             		if (client == null || client.isClosed()) {
             			break;
             		}
             		// recv a head
+					byte[] headBytes = new byte[Message.HEAD_LENGTH];
             		int headCount = 0;
             		while (headCount != Message.HEAD_LENGTH) {
             			try {
 							headCount += client.getInputStream().read(
-									buffer, headCount, Message.HEAD_LENGTH - headCount);
+									headBytes, headCount, Message.HEAD_LENGTH - headCount);
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
             		}
-            		Message msg = new Message(buffer);
-            		// recv the file 
-            		int times = msg.getFileLength() / BUFFER_LENGTH;
-            		for (int i = 0; i < times; i++) {
-            			int count = 0;
-            			while (count != BUFFER_LENGTH) {
-            				try {
-								count += client.getInputStream().read(buffer, count, BUFFER_LENGTH - count);
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
+            		// create a message
+					Message msg = null;
+					try {
+						msg = new Message(headBytes);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+					// recv the params
+					if (msg.getFlag() == Message.FLAG_IMG) {
+						byte[] paramsBytes = new byte[Message.PARAM_ALL_LENGTH];
+						int paramCount = 0;
+						try {
+							while (paramCount != Message.PARAM_ALL_LENGTH) {
+								paramCount += client.getInputStream().read(
+										paramsBytes, paramCount, Message.PARAM_ALL_LENGTH - paramCount);
 							}
-            			}
-            			msg.writeFileBytes(buffer, count);
-            		}
-            		int last = msg.getFileLength() % BUFFER_LENGTH;
-            		int lastCount = 0;
-            		while (lastCount != last) {
-            			try {
-							lastCount += client.getInputStream().read(buffer, lastCount, last - lastCount);
+							msg.writeParamsBytes(paramsBytes, paramCount);
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-            		}
-            		msg.writeFileBytes(buffer, lastCount);
+					}
+
+					// recv the file
+					byte[] fileBytes = new byte[msg.getFileLength()];
+					int fileCount = 0;
+					try {
+						while (fileCount != msg.getFileLength()) {
+							fileCount += client.getInputStream().read(
+									fileBytes, fileCount, msg.getFileLength() - fileCount);
+						}
+						msg.writeFileBytes(fileBytes, fileCount);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
             		// TODO
             		recvMsgManager.push(msg);
             	}

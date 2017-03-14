@@ -17,20 +17,14 @@ import org.springframework.web.multipart.MultipartFile;
 import location.util.ResultObject;
 import location.util.config.StaticString;
 import location.web.services.ImageService;
-import location.web.services.SocketService;
-
 
 
 @Controller
 public class LocationController {
 	
 	@Autowired  
-	@Qualifier("pictureService") 
-	ImageService pictureService;
-	
-	@Autowired  
-	@Qualifier("socketService") 
-	SocketService socketService;
+	@Qualifier("imageService")
+	ImageService imageService;
 	
 	
 	@RequestMapping(value = "/testPost", method = RequestMethod.GET)
@@ -59,7 +53,7 @@ public class LocationController {
 		response.setContentType("text/json;charset=UTF-8");
 		String userUuid = request.getParameter("userUuid");
 		
-		ResultObject uploadRe = pictureService.uploadImg(img, userUuid);
+		ResultObject uploadRe = imageService.uploadImg(img, userUuid);
 		if (uploadRe.getObject() == null) {
 			response.getWriter().write(uploadRe.getJsonString());
 			return;
@@ -80,7 +74,7 @@ public class LocationController {
 		response.setContentType("image/" + suffix);
 		
 		OutputStream out = response.getOutputStream();
-		out.write(pictureService.getImageBytes(userUuid, imgId));
+		out.write(imageService.getImageBytes(userUuid, imgId));
 		out.flush();
 		
 	}	

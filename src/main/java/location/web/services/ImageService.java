@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.UUID;
 
+import location.socket.SocketServer;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +21,8 @@ public class ImageService {
 	
 	// 存放的文件夹
 	private File saveDir = null;
+
+	private SocketServer socketServer;
 	
 	private ImageService() {
 		super();
