@@ -9,7 +9,6 @@ public class SocketTestRunner {
 		// TODO Auto-generated method stub
 		SocketServer socketServer = new SocketServer(9091);
 		socketServer.startListening();
-//		socketServer.send(new Message("123"));
 		System.out.println("start");
 		
 		Scanner sc = new Scanner(System.in);
@@ -21,8 +20,8 @@ public class SocketTestRunner {
 		while (true) {
 			String input = sc.nextLine();
 			if (input.equals("send")) {
-				Message msg = new Message(Message.FLAG_IMG, "QWERTYUIOPASDFGHJKLZXCVBNM123456", 3, "tyiu".getBytes(), params);
-				socketServer.sendMsg(msg);
+				Message img = new Message(Message.FLAG_IMG, "QWERTYUIOPASDFGHJKLZXCVBNM123456", 3, "tyiu".getBytes(), params);
+				socketServer.sendMsg(img);
 				System.out.println("send finish");
 			} else if (input.equals("recv")) {
 				Message msg = socketServer.getNextMsg();
@@ -44,8 +43,9 @@ public class SocketTestRunner {
 					for (int i = 0; i < 21; i++) {
 						System.out.print(msg.getParams()[i] + " ");
 					}
+					System.out.println();
 				}
-				System.out.println();
+
 
 				
 			} else if (input.equals("exit")) {

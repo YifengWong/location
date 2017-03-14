@@ -10,9 +10,10 @@ public class SocketServer {
 	private Socket client;
 	private int serverPort;
 	private ServerSocket server = null;
-	
-	private MsgManager recvMsgManager;
-	private MsgManager sendMsgManager;
+
+	private MsgManager msgMgr;
+//	private MsgManager recvMsgManager;
+//	private MsgManager sendMsgManager;
 	
 	private Thread recvThread;
 	private Thread sendThread;
@@ -20,8 +21,9 @@ public class SocketServer {
 	public SocketServer(final int serverPort) {
 		super();
 		this.serverPort = serverPort;
-		recvMsgManager = new MsgManager();
-		sendMsgManager = new MsgManager();
+		msgMgr = new MsgManager();
+//		recvMsgManager = new MsgManager();
+//		sendMsgManager = new MsgManager();
 	}
 	
 	public void startListening() {
@@ -49,11 +51,11 @@ public class SocketServer {
 	}
 	
 	public void sendMsg(Message msg) {
-		sendMsgManager.push(msg);
+		msgMgr.pushSend(msg);
 	}
 	
 	public Message getNextMsg() {
-		return recvMsgManager.pop();
+		return msgMgr.popRecv();
 	}
 	
 	private void beginRecvLoop() {
@@ -112,7 +114,7 @@ public class SocketServer {
 					}
 
             		// TODO
-            		recvMsgManager.push(msg);
+					msgMgr.pushRecv(msg);
             	}
             }});  
 		recvThread.start();
@@ -126,7 +128,7 @@ public class SocketServer {
             		if (client == null || client.isClosed()) {
             			break;
             		}
-            		Message msg = sendMsgManager.pop();
+            		Message msg = msgMgr.popSend();
             		if (msg == null) {
             			try {
 							Thread.currentThread().sleep(500);

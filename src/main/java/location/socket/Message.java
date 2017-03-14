@@ -81,27 +81,6 @@ public class Message implements Serializable {
 
 	public Float[] getParams() { return params; }
 
-//	private byte[] getUserUuidBytes() { return userUuid.getBytes(); }
-
-//	private byte[] getFileNumBytes() {
-//		byte[] numBytes = new byte[4];
-//		Integer temp = fileNum;
-//		for (int i = 0; i < numBytes.length; i++) {
-//			numBytes[i] = new Integer(temp & 0xff).byteValue();
-//			temp = temp >> 8;
-//		}
-//		return numBytes;
-//	}
-//
-//	private byte[] getFileLengthBytes() {
-//		byte[] lenBytes = new byte[4];
-//		Integer temp1 = fileLength;
-//		for (int i = 0; i < lenBytes.length; i++) {
-//			lenBytes[i] = new Integer(temp1 & 0xff).byteValue();
-//			temp1 = temp1 >> 8;
-//		}
-//		return lenBytes;
-	//	}
 	private byte[] getNumBytes(Object num) {
 		byte[] numBytes = new byte[4];
 		Integer temp = null;
@@ -171,14 +150,14 @@ public class Message implements Serializable {
 						(buffer[i*4 + 2] & 0xFF) << 16 | (buffer[i*4 + 3] & 0xFF) << 24;
 				params[i] = Float.intBitsToFloat(temp);
 			}
-//
-//			ByteArrayInputStream bIntput = new ByteArrayInputStream(buffer, 0, length);
-//			DataInputStream dIntput = new DataInputStream(bIntput);
-//			params = new Float[PARAM_NUM_EACH * PARAM_NUM];
-//			for (int i = 0; i < PARAM_NUM_EACH * PARAM_NUM; i++) {
-//				params[i] = dIntput.readFloat();
-//			}
 		}
+	}
+
+	public String getResultString() {
+		if (flag == FLAG_RESULT) {
+			return new String(fileBytes);
+		}
+		return null;
 	}
 	
 }
