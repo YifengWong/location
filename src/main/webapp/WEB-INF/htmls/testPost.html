@@ -23,5 +23,22 @@
      		<button>submit</button>
  		</form>
 	</div>
+
+	<div>
+		<h2>发送请求</h2>
+		<form action="http://localhost:9090/requestPost" method="post" enctype="multipart/form-data">
+			<input type="file" name="img" /><br/>
+			<span>userUuid </span><input name='userUuid' id='userUuid'><br>
+			<span>num </span><input name='num' id='num'><br>
+			<span>LINEAR_ACCELERATION </span><input name='LINEAR_ACCELERATION' id='LINEAR_ACCELERATION'><br>
+			<span>ACCELEROMETER </span><input name='ACCELEROMETER' id='ACCELEROMETER'><br>
+			<span>GRAVITY </span><input name='GRAVITY' id='GRAVITY'><br>
+			<span>ORIENTAION </span><input name='ORIENTAION' id='ORIENTAION'><br>
+			<span>GYROSCOPE </span><input name='GYROSCOPE' id='GYROSCOPE'><br>
+			<span>MAGNETIC_FIELD </span><input name='MAGNETIC_FIELD' id='MAGNETIC_FIELD'><br>
+			<span>PRESSURE </span><input name='PRESSURE' id='PRESSURE'><br>
+			<button>submit</button>
+		</form>
+	</div>
 </body>
 </html>
