@@ -57,6 +57,9 @@ public class Message implements Serializable {
 		}
 	}
 
+	/*
+	* Create a message with its attributes
+	* */
 	public Message(byte flag, String userUuid, Integer fileNum, byte[] fileBytes, Float[] params) {
 		super();
 		this.flag = flag;

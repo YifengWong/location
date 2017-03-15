@@ -20,8 +20,15 @@ public class SocketTestRunner {
 		while (true) {
 			String input = sc.nextLine();
 			if (input.equals("send")) {
-				Message img = new Message(Message.FLAG_IMG, "QWERTYUIOPASDFGHJKLZXCVBNM123456", 3, "tyiu".getBytes(), params);
-				socketServer.sendMsg(img);
+				for (int i = 0; i < 5; i++) {
+					Message img = new Message(Message.FLAG_IMG, "QWERTYUIOPASDFGHJKLZXCVBNM123456", i, "tyiu".getBytes(), params);
+					socketServer.sendMsg(img);
+				}
+
+				for (int i = 0; i < 6; i++) {
+					Message img = new Message(Message.FLAG_IMG, "123456UIOPASDFGHJKLZXCVBNM123456", i, "tyiu".getBytes(), params);
+					socketServer.sendMsg(img);
+				}
 				System.out.println("send finish");
 			} else if (input.equals("recv")) {
 				Message msg = socketServer.getNextMsg();
@@ -50,6 +57,9 @@ public class SocketTestRunner {
 				
 			} else if (input.equals("exit")) {
 				break;
+			} else if (input.equals("result")) {
+				System.out.println(socketServer.getResult("QWERTYUIOPASDFGHJKLZXCVBNM123456"));
+				System.out.println(socketServer.getResult("123456UIOPASDFGHJKLZXCVBNM123456"));
 			} else {
 				System.out.println("jump.");
 			}

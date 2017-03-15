@@ -12,8 +12,6 @@ public class SocketServer {
 	private ServerSocket server = null;
 
 	private MsgManager msgMgr;
-//	private MsgManager recvMsgManager;
-//	private MsgManager sendMsgManager;
 	
 	private Thread recvThread;
 	private Thread sendThread;
@@ -22,8 +20,6 @@ public class SocketServer {
 		super();
 		this.serverPort = serverPort;
 		msgMgr = new MsgManager();
-//		recvMsgManager = new MsgManager();
-//		sendMsgManager = new MsgManager();
 	}
 	
 	public void startListening() {
@@ -49,15 +45,29 @@ public class SocketServer {
 			e.printStackTrace();
 		}
 	}
-	
+
+	/*
+	* Send a message to algorithm system
+	* */
 	public void sendMsg(Message msg) {
 		msgMgr.pushSend(msg);
 	}
-	
+
+	/*
+	* Get Next recv message
+	* */
 	public Message getNextMsg() {
 		return msgMgr.popRecv();
 	}
-	
+
+	/*
+	* Try to get a result with user uuid, return null with none
+	* */
+	public String getResult(String userUuid) {
+		if (!msgMgr.checkFinished(userUuid)) return null;
+		return msgMgr.getFinished(userUuid);
+	}
+
 	private void beginRecvLoop() {
 		recvThread = new Thread(new Runnable() {
             public void run() {
