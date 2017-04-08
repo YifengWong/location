@@ -126,7 +126,7 @@ public class SocketServer {
             		// TODO
 					msgMgr.pushRecv(msg);
             	}
-            }});  
+            }});
 		recvThread.start();
         
 	}
@@ -151,7 +151,6 @@ public class SocketServer {
             		// TODO send error
             		byte[] bytes = msg.getMsgBytes();
             		try {
-            			System.out.println(msg.getFileNum());
 						client.getOutputStream().write(bytes, 0, bytes.length);
 						client.getOutputStream().flush();
 					} catch (IOException e) {
@@ -160,7 +159,7 @@ public class SocketServer {
 					}
         			
             	}
-            }});  
+            }});
 		sendThread.start();
 	}
 

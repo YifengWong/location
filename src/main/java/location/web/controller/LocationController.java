@@ -59,7 +59,7 @@ public class LocationController {
 		String[] str0 = request.getParameter("LINEAR_ACCELERATION").split(" ");
 		String[] str1 = request.getParameter("ACCELEROMETER").split(" ");
 		String[] str2 = request.getParameter("GRAVITY").split(" ");
-		String[] str3 = request.getParameter("ORIENTAION").split(" ");
+		String[] str3 = request.getParameter("ORIENTATION").split(" ");
 		String[] str4 = request.getParameter("GYROSCOPE").split(" ");
 		String[] str5 = request.getParameter("MAGNETIC_FIELD").split(" ");
 		String[] str6 = request.getParameter("PRESSURE").split(" ");

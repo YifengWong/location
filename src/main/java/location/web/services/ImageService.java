@@ -42,6 +42,12 @@ public class ImageService {
 	}
 
 	public ResultObject sendRequest(MultipartFile imgFile, String userUuid, Integer num, Float[] params) {
+		String fileName = imgFile.getOriginalFilename();
+		Long time = Long.valueOf(fileName.substring(0, fileName.lastIndexOf(".")));
+		Long sysTime = System.currentTimeMillis();
+
+		System.out.println(num + "," + time + "," + sysTime);
+
 		Message msg = null;
 		try {
 			msg = new Message(Message.FLAG_IMG, userUuid, num, imgFile.getBytes(), params);
@@ -68,6 +74,8 @@ public class ImageService {
 	 */
 	public ResultObject uploadImg(MultipartFile file, String userUuid) throws Exception {
 		String fileName = file.getOriginalFilename();
+
+
 		String suffix = fileName.substring(fileName.lastIndexOf(".")+1);
 		String allowSuffixs = config.getProperty("allowPicSuffixs");
 		if(allowSuffixs.indexOf(suffix) == -1) {

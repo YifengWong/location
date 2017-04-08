@@ -1,10 +1,9 @@
-package location.socket;
+package location.message;
 
-
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
-import java.util.HashMap;
 
 public class MsgManager {
 	private final Queue<Message> recvMsgQ = new LinkedList<Message>();
@@ -42,7 +41,7 @@ public class MsgManager {
 			finished.clear();
 		}
 	}
-	
+
 	public MsgManager() {
 		super();
 		cleanRecvMsgQueue();
@@ -100,7 +99,7 @@ public class MsgManager {
 	}
 
 	public void pushRecv(Message msg) {
-		if (msg.getFlag() == Message.FLAG_RESULT) setFinished(msg);
+		if (msg.getFlag() == location.socket.Message.FLAG_RESULT) setFinished(msg);
 		else {
 			synchronized (this.recvMsgQ) {
 				recvMsgQ.offer(msg);
