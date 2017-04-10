@@ -41,11 +41,7 @@ public class SocketMsgService extends AbstractMsgService {
                     }
                     // create a message
                     Message msg = null;
-                    try {
-                        msg = new Message(headBytes);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    msg = new Message(headBytes, 0);
 
                     // recv the params
                     if (msg.getFlag() == Message.FLAG_IMG) {
@@ -56,7 +52,7 @@ public class SocketMsgService extends AbstractMsgService {
                                 paramCount += client.getInputStream().read(
                                         paramsBytes, paramCount, Message.PARAM_ALL_LENGTH - paramCount);
                             }
-                            msg.writeParamsBytes(paramsBytes, paramCount);
+                            msg.writeParamsBytes(paramsBytes, 0, paramCount);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -70,7 +66,7 @@ public class SocketMsgService extends AbstractMsgService {
                             fileCount += client.getInputStream().read(
                                     fileBytes, fileCount, msg.getFileLength() - fileCount);
                         }
-                        msg.writeFileBytes(fileBytes, fileCount);
+                        msg.writeFileBytes(fileBytes, 0, fileCount);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -89,6 +85,7 @@ public class SocketMsgService extends AbstractMsgService {
                     if (client == null || client.isClosed()) {
                         break;
                     }
+
                     Message msg = msgMgr.popSend();
                     if (msg == null) {
                         try {

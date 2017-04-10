@@ -39,15 +39,15 @@ public class Message implements Serializable {
 	/*
 	* Create an empty message with head buffer
 	* */
-	public Message(final byte[] buffer) throws IOException {
+	public Message(final byte[] buffer, int begin) {
 		super();
 		if (buffer.length < HEAD_LENGTH) return;
-		this.flag = buffer[0];
-		this.userUuid = new String(buffer, 1, 32);
-		this.fileNum = buffer[34] & 0xFF | (buffer[35] & 0xFF) << 8 |
-				(buffer[36] & 0xFF) << 16 | (buffer[37] & 0xFF) << 24;
-		this.fileLength = buffer[38] & 0xFF | (buffer[39] & 0xFF) << 8 |
-				(buffer[40] & 0xFF) << 16 | (buffer[41] & 0xFF) << 24;
+		this.flag = buffer[begin+0];
+		this.userUuid = new String(buffer, begin+1, 32);
+		this.fileNum = buffer[begin+34] & 0xFF | (buffer[begin+35] & 0xFF) << 8 |
+				(buffer[begin+36] & 0xFF) << 16 | (buffer[begin+37] & 0xFF) << 24;
+		this.fileLength = buffer[begin+38] & 0xFF | (buffer[begin+39] & 0xFF) << 8 |
+				(buffer[begin+40] & 0xFF) << 16 | (buffer[begin+41] & 0xFF) << 24;
 
 		this.fileBytes = null;
 		this.fileBytesCount = 0;
@@ -134,23 +134,23 @@ public class Message implements Serializable {
 
 	}
 
-	public void writeFileBytes(final byte[] buffer, int length) {
+	public void writeFileBytes(final byte[] buffer, int begin, int length) {
 		if (fileBytes == null) fileBytes = new byte[fileLength];
 		if (length <= fileLength - fileBytesCount) {
 			for (int i = 0; i < length; ) {
-				fileBytes[fileBytesCount++] = buffer[i++];
+				fileBytes[fileBytesCount++] = buffer[begin+i++];
 			}
 		}
 	}
 
-	public void writeParamsBytes(final byte[] buffer, int length) throws IOException {
+	public void writeParamsBytes(final byte[] buffer, int begin, int length) throws IOException {
 		if (length != PARAM_ALL_LENGTH) throw new IOException("params length wrong");
 		else {
 			if (params == null) params = new Float[PARAM_NUM_EACH * PARAM_NUM];
 			int temp;
 			for (int i = 0; i < PARAM_NUM_EACH * PARAM_NUM; i++) {
-				temp = buffer[i*4 + 0] & 0xFF | (buffer[i*4 + 1] & 0xFF) << 8 |
-						(buffer[i*4 + 2] & 0xFF) << 16 | (buffer[i*4 + 3] & 0xFF) << 24;
+				temp = buffer[begin+i*4 + 0] & 0xFF | (buffer[begin+i*4 + 1] & 0xFF) << 8 |
+						(buffer[begin+i*4 + 2] & 0xFF) << 16 | (buffer[begin+i*4 + 3] & 0xFF) << 24;
 				params[i] = Float.intBitsToFloat(temp);
 			}
 		}

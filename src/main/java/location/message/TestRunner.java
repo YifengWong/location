@@ -1,5 +1,7 @@
 package location.message;
 
+import redis.clients.jedis.Jedis;
+
 import java.util.Scanner;
 
 /**
@@ -7,7 +9,8 @@ import java.util.Scanner;
  */
 public class TestRunner {
     public static void main(String[] args) {
-        AbstractMsgService msgService = new SocketMsgService(9091, new MsgManager());
+//        testRedis();
+        AbstractMsgService msgService = new RedisMsgService("127.0.0.1", 6379, new MsgManager());
         msgService.startService();
         System.out.println("start");
 
@@ -65,5 +68,17 @@ public class TestRunner {
             }
 
         }
+    }
+
+    private static void testRedis() {
+        Jedis jedis = new Jedis("127.0.0.1");
+        Float[] params = new Float[21];
+        for (int i = 0; i < 21; i ++) params[i] = 10f;
+        Message img = new Message(Message.FLAG_IMG, "QWERTYUIOPASDFGHJKLZXCVBNM123456", 0, "tyiu".getBytes(), params);
+        jedis.set("img".getBytes(), img.getMsgBytes());
+//
+//        jedis.lpush("img".getBytes(), img.getMsgBytes());
+        String re = jedis.get("img");
+        System.out.println(re);
     }
 }
