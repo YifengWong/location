@@ -30,7 +30,7 @@ public class RedisMsgService extends AbstractMsgService {
 
                     if (bytes == null || bytes.length == 0) {
                         try {
-                            Thread.currentThread().sleep(100);
+                            Thread.currentThread().sleep(5);
                             continue;
                         } catch (InterruptedException e) {
                             // TODO Auto-generated catch block
@@ -67,7 +67,7 @@ public class RedisMsgService extends AbstractMsgService {
                     Message msg = msgMgr.popSend();
                     if (msg == null) {
                         try {
-                            Thread.currentThread().sleep(100);
+                            Thread.currentThread().sleep(5);
                         } catch (InterruptedException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -77,7 +77,6 @@ public class RedisMsgService extends AbstractMsgService {
                     // TODO send error
                     byte[] bytes = msg.getMsgBytes();
                     Long re = jedis.rpush(CLIENT, bytes);
-                    System.out.println(re);
                 }
             }
         });

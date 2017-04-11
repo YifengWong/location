@@ -7,9 +7,7 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.UUID;
 
-import location.message.MsgManager;
-import location.message.SocketMsgService;
-import location.message.Message;
+import location.message.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,7 +23,7 @@ public class ImageService {
 	// 存放的文件夹
 	private File saveDir = null;
 
-	private SocketMsgService socketMsgService;
+	private AbstractMsgService msgService;
 	
 	private ImageService() {
 		super();
@@ -38,8 +36,8 @@ public class ImageService {
 		saveDir = new File (config.getProperty("savePicPath") + config.getProperty("saveDir"));
 		if (!saveDir.exists()) saveDir.mkdirs();
 
-		socketMsgService = new SocketMsgService(SERVER_PORT, new MsgManager());
-		socketMsgService.startService();
+		msgService = new RedisMsgService("127.0.0.1", 6379, new MsgManager());
+		msgService.startService();
 	}
 
 	public ResultObject sendRequest(MultipartFile imgFile, String userUuid, Integer num, Float[] params) {
@@ -58,12 +56,12 @@ public class ImageService {
 		if (msg == null)
 			return new ResultObject(StaticString.RESULT_FAIL, StaticString.IMG_UPLOAD_FAIL, null);
 
-		String result = socketMsgService.getResult(userUuid);
+		String result = msgService.getResult(userUuid);
 
 		if (result != null)
 			return new ResultObject(StaticString.LOCATION_RESULT, StaticString.IMG_RESULT, result);
 
-		socketMsgService.sendMsg(msg);
+		msgService.sendMsg(msg);
 		return new ResultObject(StaticString.RESULT_SUCC, StaticString.IMG_UPLOAD_SUCC, null);
 	}
 	
