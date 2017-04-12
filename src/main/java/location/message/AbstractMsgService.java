@@ -2,6 +2,7 @@ package location.message;
 
 /**
  * Created by wyf on 17-4-7.
+ * As an interface for message service.
  */
 public abstract class AbstractMsgService {
 
@@ -16,14 +17,14 @@ public abstract class AbstractMsgService {
     }
 
     /*
-    * Send a msg to algorithm
+    * Send a msg to algorithm.
     * */
     public void sendMsg(Message msg) {
         msgMgr.pushSend(msg);
     }
 
     /*
-    * Get Next recv message
+    * Get next received message.
     * */
     public Message getNextMsg() {
         return msgMgr.popRecv();
@@ -38,12 +39,12 @@ public abstract class AbstractMsgService {
     }
 
     /*
-    * Generate a recv loop thread
+    * Generate a receive loop thread.
     * */
     protected abstract Thread generateRecvThread();
 
     /*
-    * Generate a send loop thread
+    * Generate a send loop thread.
     * */
     protected abstract Thread generateSendThread();
 

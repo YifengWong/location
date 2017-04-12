@@ -3,6 +3,9 @@ package location.message;
 import java.io.IOException;
 import java.io.Serializable;
 
+/*
+ * The message use for communication.
+ * */
 public class Message implements Serializable {
 	public static final byte FLAG_FAIL = 0;
 	public static final byte FLAG_IMG = 1;
@@ -13,9 +16,11 @@ public class Message implements Serializable {
 
 	public static final int PARAM_NUM = 7;
 	public static final int PARAM_NUM_EACH = 3;
+
 	// All params length in byte
 	public static final int PARAM_ALL_LENGTH = 4 * PARAM_NUM_EACH * PARAM_NUM;
 
+	// The postion of each param in the params array.
 	public static final int LINEAR_ACCELERATION = 0;
 	public static final int ACCELEROMETER = 3;
 	public static final int GRAVITY = 6;
@@ -23,7 +28,6 @@ public class Message implements Serializable {
 	public static final int GYROSCOPE = 12;
 	public static final int MAGNETIC_FIELD = 15;
 	public static final int PRESSURE = 18;
-
 
 	private byte flag;
 	private String userUuid;
@@ -71,17 +75,38 @@ public class Message implements Serializable {
 		this.params = params;
 	}
 
-
+	/*
+	 * Get the flag in the message.
+	 * */
 	public byte getFlag() { return flag; }
 
+	/*
+	* Get the request uuid in the message.
+	* */
 	public String getUserUuid() { return userUuid; }
 
+	/*
+     * Get the file num, to check the message order.
+     * */
 	public Integer getFileNum() { return fileNum; }
 
+	/*
+     * Get the file length, to make it binary-safe.
+     * */
 	public Integer getFileLength() { return fileLength; }
 
+	/*
+     * Get the file bytes.
+     * */
 	public byte[] getFileBytes() { return fileBytes; }
 
+	/*
+     * return the params array.
+     * use such as: linear_acceleration_x
+     *              - getParams[LINEAR_ACCELERATION+0]
+     *          	gravity_y
+     *              - getParams[GRAVITY+1]
+     * */
 	public Float[] getParams() { return params; }
 
 	private byte[] getNumBytes(Object num) {
@@ -103,6 +128,9 @@ public class Message implements Serializable {
 		return numBytes;
 	}
 
+	/*
+     * Get the message all bytes.
+     * */
 	public byte[] getMsgBytes() {
 		int allLength = HEAD_LENGTH + fileLength;
 		if (flag == FLAG_IMG) allLength += PARAM_ALL_LENGTH;
@@ -134,6 +162,16 @@ public class Message implements Serializable {
 
 	}
 
+	/*
+     * Get the message bytes all length, to make it binary-safe.
+     * */
+	public int getMsgLength() {
+		return HEAD_LENGTH + fileLength;
+	}
+
+	/*
+     * Write the bytes into the message file.
+     * */
 	public void writeFileBytes(final byte[] buffer, int begin, int length) {
 		if (fileBytes == null) fileBytes = new byte[fileLength];
 		if (length <= fileLength - fileBytesCount) {
@@ -143,6 +181,9 @@ public class Message implements Serializable {
 		}
 	}
 
+	/*
+     * Write the bytes into the message params.
+     * */
 	public void writeParamsBytes(final byte[] buffer, int begin, int length) throws IOException {
 		if (length != PARAM_ALL_LENGTH) throw new IOException("params length wrong");
 		else {

@@ -4,9 +4,9 @@ import redis.clients.jedis.Jedis;
 
 import java.io.IOException;
 
-/**
- * Created by wyf on 17-4-8.
- */
+/*
+ * A message service work with Redis.
+ * */
 public class RedisMsgService extends AbstractMsgService {
 
     private Jedis jedis;
