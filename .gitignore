@@ -1,1 +1,11 @@
-/target
+.classpath
+.project
+target/
+bin/
+.settings/
+.idea/
+*.iml
+log.txt
+*.gz
+*.out
+*.tar
