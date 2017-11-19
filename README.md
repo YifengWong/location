@@ -23,6 +23,8 @@
 
 ## 2. Java Web应用
 
+#### 2.1 主要包 location.message内容
+![](https://github.com/YifengWong/location/blob/master/docs/pics/java-message-package-classes.png)
 
 
 ## 3. C++ 入口
