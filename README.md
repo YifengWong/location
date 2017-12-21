@@ -121,24 +121,35 @@
 3. RedisMsgService实现了针对Redis通信方式的线程启动。
 4. SocketMsgService实现了针对Socket通信方式的线程启动。
 
-属性设计
+###### 属性设计
 1. RedisMsgService - Jedis对象保持与Redis服务通信；redisServerIP、redisServerPort用于初始化Jedis。
 2. SocketMsgService - Socket对象保持C++模块的通信信息；serverSocket、serverPort用于初始化client对象。
 
-方法设计
+###### 方法设计
 1. startService - 启动服务，服务端启动过程中需要直接调用以提供服务。
 2. generateRecvThread - 启动接收信息线程，与发送信息线程、主线程并行。
 3. generateSendThread - 启动发送信息线程，与接收信息线程、主线程并行。
-
-
 
 ##### 4.1.3.4 消息管理中心 MsgManager
 1. 该类用于管理消息，作为Java端的消息中心，对外提供访问方法。
 2. 无论是获取消息还是发送消息，都可以调用MsgManager的方法，由其进行统一处理，这样便于优化。
 
+###### 属性设计
+1. recvMsgQ - 队列，存放接收到的消息对象。
+2. sendMsgQ - 队列，存放仍未完成发送的消息对象。
+3. finished - Map，存放已经完成请求处理的结果信息。
+
+###### 方法设计
+1. pushSend - 向队列增加一个待发送消息。
+2. pushRecv - 向队列增加一个待接收消息。
+3. popSend - 从队列中获取一个待发送消息。
+4. popRecv - 从队列中获取一个待接收消息。
+5. setFinished - 传入一个消息对象，并将该消息中的内容处理至finishedMap中存放。
+6. checkFinished - 可以查看某个id对应的请求是否已完成。
+7. getFinished - 从已完成Map中获取结果信息用于返回。
 
 ##### 4.1.3.5 其余内容
-作为一个普通Web应用，使用Spring定义的Controller提供Web接口。
+作为一个普通Web应用，使用Spring定义的Controller提供Web RESTful接口。
 
 #### 4.1.4 C++入口模块设计
 ##### 4.1.4.1 主要内容
