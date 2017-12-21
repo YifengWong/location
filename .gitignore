@@ -3,7 +3,9 @@
 target/
 bin/
 .settings/
+
 .idea/
+
 *.iml
 log.txt
 *.gz
