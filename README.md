@@ -185,3 +185,8 @@ Socket方案有了很大的改善。由于是在应用级别的实现，最终�
 每一个消息的通信延迟直接降低到了5ms！
 
 ### 5.1 红字2
+![](https://github.com/YifengWong/location/blob/master/docs/pics/msg-seq.png)
+
+上图只是一个简单的流程概念模型。为了提高服务端的响应速度，项目实际使用了并行流程。后台能够不停地接收来自客户端的请求，在新开启的线程中处
+理每一条消息。JavaWeb中可直接使用synchronized关键字，C++中使用了pthread_mutex_lock实现锁功能，其中对于锁粒度的把控也需要测试调试看看
+怎样的粒度才能更好地提高效率。
